@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { Mail, Phone, MapPin, Clock, Send, Globe, Linkedin, Facebook, Twitter, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 export function Contact() {
   useEffect(() => {
@@ -11,9 +11,35 @@ export function Contact() {
     }
   }, []);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const WEB3FORMS_ACCESS_KEY = "21b09390-8757-47f4-aa33-05e670302732";
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    toast.success("Thank you! Our consultancy team will reach out to you within 24 hours.");
+
+    const formEl = e.currentTarget;
+    const formData = new FormData(formEl);
+    formData.set("access_key", WEB3FORMS_ACCESS_KEY);
+    formData.set("subject", "Yield Audit - Ramshree Corporation");
+
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        body: formData,
+      });
+
+      const json = await res.json().catch(() => null);
+
+      if (res.ok && json?.success) {
+        toast.success("Thank you! Our consultancy team will reach out to you within 24 hours.");
+        formEl.reset();
+        return;
+      }
+
+      const message = json?.body?.message || json?.message || "Unable to submit your request.";
+      toast.error(message);
+    } catch {
+      toast.error("Network error while submitting the form. Please try again.");
+    }
   };
 
   const industrialHubs = [
@@ -105,28 +131,57 @@ export function Contact() {
                     <div className="grid md:grid-cols-2 gap-8">
                       <div className="space-y-3">
                         <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Full Identity</label>
-                        <input required type="text" placeholder="Pramod Sharma" className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none" />
+                        <input
+                          required
+                          type="text"
+                          name="name"
+                          placeholder="Pramod Sharma"
+                          className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none"
+                        />
                       </div>
                       <div className="space-y-3">
                         <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Corporate Entity</label>
-                        <input required type="text" placeholder="e.g. Pharma Solutions Ltd" className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none" />
+                        <input
+                          required
+                          type="text"
+                          name="company"
+                          placeholder="e.g. Pharma Solutions Ltd"
+                          className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none"
+                        />
                       </div>
                     </div>
 
                     <div className="grid md:grid-cols-2 gap-8">
                       <div className="space-y-3">
                         <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Professional Email</label>
-                        <input required type="email" placeholder="name@company.com" className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none" />
+                        <input
+                          required
+                          type="email"
+                          name="email"
+                          placeholder="name@company.com"
+                          className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none"
+                        />
                       </div>
                       <div className="space-y-3">
                         <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Direct Contact</label>
-                        <input required type="tel" placeholder="+91 XXXXX XXXXX" className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none" />
+                        <input
+                          required
+                          type="tel"
+                          name="phone"
+                          placeholder="+91 XXXXX XXXXX"
+                          className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none"
+                        />
                       </div>
                     </div>
 
                     <div className="space-y-3">
                       <label className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] ml-1">Synthesis Requirements</label>
-                      <textarea rows={4} placeholder="Describe your industrial process..." className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 resize-none outline-none"></textarea>
+                      <textarea
+                        rows={4}
+                        name="message"
+                        placeholder="Describe your industrial process..."
+                        className="w-full px-6 py-4 bg-slate-50/50 border border-slate-100 rounded-2xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 resize-none outline-none"
+                      ></textarea>
                     </div>
 
                     <button type="submit" className="w-full py-5 bg-slate-900 text-white rounded-2xl font-bold text-lg flex items-center justify-center gap-4 hover:bg-slate-800 transition-all shadow-xl shadow-slate-200 active:scale-[0.98]">

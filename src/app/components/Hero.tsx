@@ -2,7 +2,7 @@ import { motion } from "motion/react";
 import { Link } from "react-router";
 import { ArrowRight, ChevronRight, FlaskConical, ShieldCheck } from "lucide-react";
 import { ImageWithFallback } from "./figma/ImageWithFallback";
-import synthesisProcess from "figma:asset/4b88c8bde996c7f813d9440330efc4651e6d90d5.png";
+import synthesisProcess from "../../assets/Home-1.png";
 
 export function Hero() {
   return (

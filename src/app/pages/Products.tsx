@@ -376,7 +376,7 @@ Thank you.`;
       </section>
 
       {/* Sticky Filter Bar */}
-      <section className="sticky top-[72px] z-40 bg-white border-b border-slate-200 shadow-md">
+      <section className="sticky top-[calc(var(--nav-height,5rem)-1px)] z-40 bg-white border-b border-slate-200 shadow-md">
         <div className="container mx-auto px-6 py-6">
           {/* Search Bar */}
           <div className="relative mb-6">
@@ -483,18 +483,25 @@ Thank you.`;
                             <div key={subcatKey}>
                               {/* Subcategory Header */}
                               <button
+                                type="button"
                                 onClick={() => toggleSubcategory(subcatKey)}
-                                className="w-full px-8 py-5 flex items-center justify-between hover:bg-slate-50 transition-colors group"
+                                className="w-full px-6 sm:px-8 py-5 flex items-start gap-3 sm:gap-4 text-left justify-between hover:bg-slate-50 transition-colors group"
                               >
-                                <div className="flex items-center gap-4">
-                                  <FlaskConical className={`w-5 h-5 ${colors.icon} group-hover:scale-110 transition-transform`} />
-                                  <h3 className="text-lg font-bold text-slate-800">{subcategory}</h3>
-                                  <span className={`px-3 py-1 rounded-full text-xs font-black ${colors.badge}`}>
+                                <div className="flex min-w-0 flex-1 items-start gap-3 sm:gap-4">
+                                  <FlaskConical
+                                    className={`w-5 h-5 shrink-0 mt-0.5 ${colors.icon} group-hover:scale-110 transition-transform`}
+                                  />
+                                  <h3 className="text-lg font-bold text-slate-800 min-w-0 flex-1 text-left leading-snug break-words">
+                                    {subcategory}
+                                  </h3>
+                                  <span
+                                    className={`shrink-0 self-start px-3 py-1 rounded-full text-xs font-black mt-0.5 ${colors.badge}`}
+                                  >
                                     {products.length}
                                   </span>
                                 </div>
-                                <ChevronDown 
-                                  className={`w-5 h-5 text-slate-400 transition-transform duration-300 ${
+                                <ChevronDown
+                                  className={`w-5 h-5 shrink-0 text-slate-400 mt-1 transition-transform duration-300 ${
                                     isExpanded ? "rotate-180" : ""
                                   }`}
                                 />

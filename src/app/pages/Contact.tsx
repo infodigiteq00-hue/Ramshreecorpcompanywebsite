@@ -57,7 +57,7 @@ export function Contact() {
                 <div className="space-y-10">
                   {[
                     { icon: <Phone className="w-5 h-5" />, label: "Priority Hotline", val: "+91 91730 00002", sub: "Mon - Sat, 9am - 7pm IST", color: "slate" },
-                    { icon: <Mail className="w-5 h-5" />, label: "Consultancy Desk", val: "ramshree.corp@rediffmail.com", sub: "info@ramshreecorp.com", color: "slate", isEmail: true },
+                    { icon: <Mail className="w-5 h-5" />, label: "Consultancy Desk", val: "ramshree.corp@rediffmail.com", sub: "info@ramshreecorporation.in", color: "slate", isEmail: true },
                     { icon: <MapPin className="w-5 h-5" />, label: "Office", val: "213 Umang Complex, Kapodra Patia, G.I.D.C Ankleshwar", sub: "", color: "slate" },
                     { icon: <MapPin className="w-5 h-5" />, label: "Warehouse", val: "Plot No. 47,48 Sudhama Industrial State, GIDC Ankleshwar, 393002", sub: "", color: "slate" }
                   ].map((item, i) => (

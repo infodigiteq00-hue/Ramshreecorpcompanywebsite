@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import founderImg from "figma:asset/e2c57db811a72821689de9302752f9554f4ca99f.png";
+import founderImg from "../../assets/Founder.png";
 
 export function Home() {
   const processes = [

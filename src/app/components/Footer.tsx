@@ -1,6 +1,6 @@
 import { Link } from "react-router";
 import { Mail, MapPin, Phone, Linkedin, Twitter, Facebook } from "lucide-react";
-import logoImg from "figma:asset/ba0cf2dd2fb8682930e35518b3207e18b00742cf.png";
+import logoImg from "../../assets/logo.png";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -68,7 +68,7 @@ export function Footer() {
               <Mail className="w-5 h-5 text-blue-500 shrink-0 mt-0.5" />
               <div className="flex flex-col gap-1">
                 <span>ramshree.corp@rediffmail.com</span>
-                <span>info@ramshreecorp.com</span>
+                <span>info@ramshreecorporation.in</span>
               </div>
             </li>
             <li className="flex items-start gap-3">

@@ -1,13 +1,14 @@
 import { Link, useLocation } from "react-router";
 import { Menu, X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import logoImg from "figma:asset/ba0cf2dd2fb8682930e35518b3207e18b00742cf.png";
+import logoImg from "../../assets/logo.png";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const navRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -15,6 +16,30 @@ export function Navbar() {
     };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  /** Keeps --nav-height in sync for sticky sections (e.g. Products search bar) */
+  useEffect(() => {
+    const el = navRef.current;
+    if (!el) return;
+
+    const syncHeight = () => {
+      // rAF + ceil: avoids subpixel gaps between fixed nav and sticky bars (scroll “hairline”)
+      requestAnimationFrame(() => {
+        const h = el.getBoundingClientRect().height;
+        document.documentElement.style.setProperty("--nav-height", `${Math.ceil(h)}px`);
+      });
+    };
+
+    syncHeight();
+    const ro = new ResizeObserver(syncHeight);
+    ro.observe(el);
+    window.addEventListener("scroll", syncHeight, { passive: true });
+
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("scroll", syncHeight);
+    };
   }, []);
 
   const navLinks = [
@@ -27,6 +52,7 @@ export function Navbar() {
 
   return (
     <nav
+      ref={navRef}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white border-b border-slate-100 ${
         scrolled ? "shadow-sm py-2" : "py-4"
       }`}

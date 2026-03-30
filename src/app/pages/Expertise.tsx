@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import { Link } from "react-router";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
-import hydrogenationImg from "figma:asset/d36cd533fe3662b265d023b94c463a7064c76b46.png";
+import hydrogenationImg from "../../assets/HydrogenationSectionImg.png";
 
 export function Expertise() {
   const expertiseAreas = [

@@ -1,7 +1,7 @@
 import { motion } from "motion/react";
 import { ImageWithFallback } from "../components/figma/ImageWithFallback";
 import { Award, Briefcase, History, TrendingUp, Users } from "lucide-react";
-import founderImg from "../../assets/Founder.png";
+import founderImg from "../../assets/founder.png";
 import { useEffect } from "react";
 
 export function About() {

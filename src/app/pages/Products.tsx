@@ -1,8 +1,7 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Search, ChevronDown, FlaskConical, Droplets, Atom, Sparkles, ShoppingCart, X, Send, Check } from "lucide-react";
 import { Link } from "react-router";
-import { toast } from "sonner";
 
 // Product data structure based on Excel
 const productData = {
@@ -202,11 +201,6 @@ export function Products() {
   const [expandedSubcategories, setExpandedSubcategories] = useState<Set<string>>(new Set());
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(new Set());
   const [showCart, setShowCart] = useState(false);
-  const [inquiryName, setInquiryName] = useState("");
-  const [inquiryEmail, setInquiryEmail] = useState("");
-  const [isSendingInquiry, setIsSendingInquiry] = useState(false);
-
-  const WEB3FORMS_ACCESS_KEY = "21b09390-8757-47f4-aa33-05e670302732";
 
   useEffect(() => {
     // Scroll to top when landing on /products
@@ -249,29 +243,14 @@ export function Products() {
     setSelectedProducts(new Set());
   };
 
-  const sendInquiry = async () => {
-    if (selectedProducts.size === 0) return;
-
-    if (!inquiryName.trim()) {
-      toast.error("Please enter your name to send the inquiry.");
-      return;
-    }
-
-    if (!inquiryEmail.trim()) {
-      toast.error("Please enter your email to send the inquiry.");
-      return;
-    }
-
-    setIsSendingInquiry(true);
+  const sendInquiry = () => {
     try {
-      const productList = Array.from(selectedProducts)
-        .map((key) => {
-          const [name, cas] = key.split("|");
-          return `• ${name}${cas ? ` (CAS: ${cas})` : ""}`;
-        })
-        .join("\n");
+      const productList = Array.from(selectedProducts).map(key => {
+        const [name, cas] = key.split('|');
+        return `• ${name}${cas ? ` (CAS: ${cas})` : ''}`;
+      }).join('\n');
 
-      const subject = "Product Inquiry - Ramshree Corporation";
+      const subject = 'Product Inquiry - Ramshree Corporation';
       const body = `Dear Ramshree Team,
 
 I would like to request a quote and further information for the following products:
@@ -286,35 +265,12 @@ Please provide:
 
 Thank you.`;
 
-      const formData = new FormData();
-      formData.set("access_key", WEB3FORMS_ACCESS_KEY);
-      formData.set("subject", subject);
-      formData.set("name", inquiryName);
-      formData.set("email", inquiryEmail);
-      formData.set("message", body);
-
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        body: formData,
-      });
-
-      const json = await res.json().catch(() => null);
-
-      if (res.ok && json?.success) {
-        toast.success("Inquiry sent! Our team will reach out shortly.");
-        clearSelection();
-        setInquiryName("");
-        setInquiryEmail("");
-        setShowCart(false);
-        return;
-      }
-
-      const message = json?.body?.message || json?.message || "Unable to send inquiry.";
-      toast.error(message);
-    } catch {
-      toast.error("Network error while sending the inquiry. Please try again.");
-    } finally {
-      setIsSendingInquiry(false);
+      const mailtoLink = `mailto:ramshree.corp@rediffmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+      
+      window.open(mailtoLink, '_blank');
+    } catch (error) {
+      console.error('Error sending inquiry:', error);
+      alert('Unable to open email client. Please contact us directly at ramshree.corp@rediffmail.com');
     }
   };
 
@@ -698,33 +654,12 @@ Thank you.`;
 
                 {/* Footer Actions */}
                 <div className="p-6 border-t border-slate-200 bg-slate-50 space-y-3">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <input
-                      type="text"
-                      value={inquiryName}
-                      onChange={(e) => setInquiryName(e.target.value)}
-                      placeholder="Your Name"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none"
-                      aria-label="Your name"
-                      required
-                    />
-                    <input
-                      type="email"
-                      value={inquiryEmail}
-                      onChange={(e) => setInquiryEmail(e.target.value)}
-                      placeholder="Your Email"
-                      className="w-full px-4 py-3 bg-slate-50 border border-slate-100 rounded-xl focus:ring-4 focus:ring-blue-500/5 focus:bg-white focus:border-blue-200 transition-all text-slate-900 font-medium placeholder:text-slate-300 outline-none"
-                      aria-label="Your email"
-                      required
-                    />
-                  </div>
                   <button
                     onClick={sendInquiry}
-                    disabled={isSendingInquiry}
-                    className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-3 shadow-lg shadow-blue-600/30 text-lg disabled:opacity-60 disabled:cursor-not-allowed"
+                    className="w-full bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition-all flex items-center justify-center gap-3 shadow-lg shadow-blue-600/30 text-lg"
                   >
                     <Send className="w-5 h-5" />
-                    {isSendingInquiry ? "Sending..." : "Send Inquiry"}
+                    Send Inquiry
                   </button>
                   <button
                     onClick={clearSelection}
